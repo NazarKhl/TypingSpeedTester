@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
 
-// Sample array of random sentences
-const textSamples = [
-  "The quick brown fox jumps over the lazy dog.",
-  "Typing speed is a great skill to have.",
-  "Practice makes perfect, so keep typing!",
-  "A journey of a thousand miles begins with a single step.",
-  "React is a powerful library for building user interfaces.",
-  "JavaScript is versatile and fun to learn.",
-  "Consistency is the key to becoming a better programmer.",
-  "The sun rises in the east and sets in the west.",
-];
-
-const getRandomText = () => textSamples[Math.floor(Math.random() * textSamples.length)];
+// Simulated API for generating random sentences
+const getRandomSentence = () => {
+  const sentences = [
+    "The quick brown fox jumps over the lazy dog.",
+    "Typing speed is a great skill to have.",
+    "Practice makes perfect, so keep typing!",
+    "A journey of a thousand miles begins with a single step.",
+    "React is a powerful library for building user interfaces.",
+    "JavaScript is versatile and fun to learn.",
+    "Consistency is the key to becoming a better programmer.",
+    "The sun rises in the east and sets in the west.",
+    "Life is like riding a bicycle. To keep your balance, you must keep moving.",
+    "Success is not the key to happiness. Happiness is the key to success."
+  ];
+  return sentences[Math.floor(Math.random() * sentences.length)];
+};
 
 const App = () => {
-  const [sampleText, setSampleText] = useState(getRandomText());
+  const [sampleText, setSampleText] = useState(getRandomSentence());
   const [input, setInput] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [timer, setTimer] = useState(0);
-  const [testDuration, setTestDuration] = useState(1); // Default duration in minutes
+  const [testDuration, setTestDuration] = useState(60); // Default duration in seconds
   const [isStarted, setIsStarted] = useState(false);
   const [correctChars, setCorrectChars] = useState(0);
   const [isTestEnded, setIsTestEnded] = useState(false);
@@ -36,10 +39,10 @@ const App = () => {
         setTimer((prev) => prev + 1);
 
         // End the test when the time is up
-        if (timer >= testDuration * 60) {
+        if (timer >= testDuration) {
           endTest();
         }
-      }, 1000);
+      }, 1000); // Timer runs every second
     }
     return () => clearInterval(interval);
   }, [isStarted, timer, testDuration, isTestEnded]);
@@ -79,7 +82,7 @@ const App = () => {
 
   // Reset the test
   const handleReset = () => {
-    setSampleText(getRandomText());
+    setSampleText(getRandomSentence());
     setInput("");
     setStartTime(null);
     setTimer(0);
@@ -118,7 +121,7 @@ const App = () => {
         <>
           <div className="settings">
             <label>
-              Test Duration (minutes):
+              Test Duration (seconds):
               <input
                 type="number"
                 min="1"
